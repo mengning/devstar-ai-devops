@@ -110,6 +110,7 @@ cp gitea-mcp /usr/local/bin/
 
 ### 第四步：配置 Cursor IDE
 
+**Cursor在内网无法使用私有部署的大模型，如果需要在内网使用，请配置continue.dev（4.4）或Cline（4.5）**
 在 Cursor 中集成前面配置好的 MCP 服务器和私有 LLM，实现 AI 驱动的智能编程体验。
 
 #### 4.1 在 Cursor 中配置 LLM
@@ -193,7 +194,6 @@ GITEA_ACCESS_TOKEN配置为个人的access token
 ```
 
 
-
 #### 4.3 验证配置
 
 1. **检查 MCP 状态：** 在 Settings → MCP 中确认服务器显示为 **Enabled** 且有绿点标识
@@ -202,6 +202,79 @@ GITEA_ACCESS_TOKEN配置为个人的access token
 ![](docs/img/cursor-5.png)
 
 📖 [详细配置指南](docs/cursor.md)
+
+#### 4.4 Continue.dev 配置
+配置 Ollama 集成
+创建/编辑 ~/.continue/config.json：
+```
+{
+  "models": [
+    {
+      "title": "DeepSeek-R1 Local",
+      "provider": "ollama",
+      "model": "deepseek-r1:1.5b",
+      "apiBase": "http://localhost:11434"
+    }
+  ],
+  "tabAutocompleteModel": {
+    "title": "Qwen Coder",
+    "provider": "ollama",
+    "model": "qwen2.5-coder:1.5b",
+    "apiBase": "http://localhost:11434"
+  },
+  "embeddingsProvider": {
+    "provider": "ollama",
+    "model": "nomic-embed-text",
+    "apiBase": "http://localhost:11434"
+  }
+}
+```
+配置 MCP 服务器
+创建文件 ~/.continue/config.yaml 或在工作区创建 .continue/mcpServers/gitea.yaml：
+stdio 方式：
+```
+# ~/.continue/config.yaml
+name: DevStar MCP Server
+version: 0.0.1
+schema: v1
+mcpServers:
+  - name: Gitea MCP
+    type: stdio
+    command: gitea-mcp
+    args:
+      - "-t"
+      - "stdio"
+      - "--host"
+      - "https://devstar.cn"
+    env:
+      GITEA_ACCESS_TOKEN: ${{ secrets.GITEA_ACCESS_TOKEN }}
+```
+sse 方式：
+```
+# .continue/mcpServers/gitea-sse.yaml
+name: DevStar MCP Server
+version: 0.0.1
+schema: v1
+mcpServers:
+  - name: Gitea MCP SSE
+    type: sse
+    url: "http://localhost:8080/sse"
+    env:
+      GITEA_ACCESS_TOKEN: ${{ secrets.GITEA_ACCESS_TOKEN }}
+```
+
+#### 4.5 Cline 配置
+配置 Ollama 集成
+1.在 VSCode 中打开 Cline 插件设置：
+2.找到 “Provider / API provider” 部分
+3.选择 Ollama
+4.填写 Base URL，通常是 http://localhost:11434/（默认 Ollama 的 API 端口） 
+5.选择你想用的模型（已经通过 Ollama pull 下来的）
+
+配置 MCP Server
+在 Cline 的 “MCP Servers” 界面里，选择 “Installed” 标签页。
+添加一个新的 MCP Server 配置
+文件内容同cursor
 
 ## 📖 使用示例
 
