@@ -1,6 +1,6 @@
-# DevStar MCP Server
+# DevStar AI DevOps
 
-DevStar MCP Server 是一个完整的AI驱动开发平台解决方案，通过集成 DevStar 代码托管平台、私有化大语言模型、Gitea MCP 服务器和 Cursor IDE，为开发者提供智能化的代码生成、管理和审查体验。
+DevStar AI DevOps 是一个完整的AI驱动研发平台解决方案，通过集成 DevStar平台、代码大语言模型、Gitea MCP Server和 AI IDE（Cursor、Claude Code、iFlow等），为开发者提供智能化研发支撑体系。
 
 ## 🏗️ 系统架构
 
