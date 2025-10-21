@@ -102,17 +102,17 @@ cp gitea-mcp /usr/local/bin/
 
 打开VScode，在扩展管理中搜索“continue"
 
-![](D:\code\devstar-ai-devops\docs\img\continue-1.png)
+![](docs/img/continue-1.png)
 
 ##### 4.1.1 本地LLM
 
 点击左上角的Add Chat model，选择自己想要的模型类型。
 
-![](D:\code\devstar-ai-devops\docs\img\continue-2.png)
+![](docs/img/continue-2.png)
 
 使用Ollama本地部署的LLM，相关配置如下图
 
-![](D:\code\devstar-ai-devops\docs\img\continue-3.png)
+![](docs/img/continue-3.png)
 
 
 
@@ -184,7 +184,7 @@ GITEA_ACCESS_TOKEN配置为个人的access token
 填写 Base URL，通常是 http://localhost:11434/（默认 Ollama 的 API 端口） 
 选择你想用的模型（已经通过 Ollama pull 下来的）
 
-![](D:\code\devstar-ai-devops\docs\img\cline-1.png)
+![](docs/img/cline-1.png)
 
 
 
@@ -192,13 +192,13 @@ GITEA_ACCESS_TOKEN配置为个人的access token
 
 选择“ **管理 MCP 服务器** ”以打开 **MCP 服务器** 浮出控件，然后选择 **“设置”** 图标。
 
-![](D:\code\devstar-ai-devops\docs\img\cline-2.png)
+![](docs/img/cline-2.png)
 
 在面板的 **MCP 服务器** 部分中，选择“ **配置 MCP 服务器** ”以打开 `cline_mcp_settings.json` 文件进行编辑。
 
 将continue中配置添加到 `mcpServers` JSON 对象：
 
-![](D:\code\devstar-ai-devops\docs\img\cline-3.png)
+![](docs/img/cline-3.png)
 
 #### 4.3 cursor配置
 
