@@ -61,42 +61,28 @@ curl -fsSL https://ollama.com/install.sh | sh
 ```
 2. 下载模型
 ```bash
-ollama pull deepseek-r1:7b      # 平衡选择
-ollama pull qwen2.5-coder:7b    # 代码专用
+ollama pull deepseek-r1:8b      
+ollama pull qwen2.5-coder:32b #mcp需要使用agent模式 deepseek不支持 模型大小根据电脑配置选择
 ```
 3. 启动 Ollama 服务
 ```bash   
 ollama serve
 ```
-4. 安装并配置 ngrok
-```bash
-curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc \
-  | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null \
-  && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main" \
-  | sudo tee /etc/apt/sources.list.d/ngrok.list \
-  && sudo apt update \
-  && sudo apt install ngrok
-
-ngrok config add-authtoken <your-token>
-```
-5. 启动 ngrok 提供公共访问
-```bash  
-ngrok http 11434 --host-header="localhost:11434"
-```
-
-**产出结果：** 通过 ngrok 公共 URL 访问的本地大模型 API
-
-![](docs/img/llm-1.png)
-
 
 📖 [详细部署指南](docs/deploy-llm.md)
 
 ### 三、部署 Gitea MCP 服务器
 
 **安装配置：**
+
 ```bash
 # 从源码构建
 git clone https://gitea.com/gitea/gitea-mcp.git
+
+构建前请先安装：
+
+1.make
+2.Golang（建议 Go 1.24 及以上）
 
 make install
 # 构建后，将二进制文件 gitea-mcp 复制到系统 PATH 中包含的目录。例如：
@@ -108,44 +94,31 @@ cp gitea-mcp /usr/local/bin/
 
 📖 [详细配置指南](docs/devstar-mcp.md)
 
-### 第四步：配置 Cursor IDE
 
-**Cursor在内网无法使用私有部署的大模型，如果需要在内网使用，请配置continue.dev（4.4）或Cline（4.5）**
-在 Cursor 中集成前面配置好的 MCP 服务器和私有 LLM，实现 AI 驱动的智能编程体验。
 
-#### 4.1 在 Cursor 中配置 LLM
+### 四、配置AI IDE（continue cline cursor（cursor不支持内网））
 
-**内置模型**
+#### 4.1 Continue.dev 配置
 
-cursor内置了很多LLMs，包括最先进的GPT4、Claude4和openai最新发布的推理模型o3，在右上角的设置中即可打开相应的模型进行辅助编程。
+打开VScode，在扩展管理中搜索“continue"
 
-![](docs/img/cursor-7.png)
+![](D:\code\devstar-ai-devops\docs\img\continue-1.png)
 
-**私有LLM**
+##### 4.1.1 本地LLM
 
-1. 定义我们在cursor中使用的模型，可以使用 `ollama list` 查看您拥有的模型列表。
+点击左上角的Add Chat model，选择自己想要的模型类型。
 
-2. 在 OpenAI Key 字段输入：`ollama`
+![](D:\code\devstar-ai-devops\docs\img\continue-2.png)
 
-3. 在 Base URL 字段输入：前面步骤中获取的 ngrok 公共地址
-  
-4. 点击Verify，如果不成功，取消选中所有其他模型，仅选中刚添加的模型，再点击 Verify 即可。
+使用Ollama本地部署的LLM，相关配置如下图
 
-![](docs/img/llm-4.png)
+![](D:\code\devstar-ai-devops\docs\img\continue-3.png)
 
-#### 4.2 在 Cursor 中配置 MCP 服务器
 
-**全局设置**
 
-1. Cursor Setting → Tools & Integrations → MCP Tools
-2. 点击 "New MCP Server"
-3. 将前面步骤中的 MCP 配置代码添加到 `mcp.json` 文件
+##### 4.1.2 MCP
 
-![](docs/img/cursor-1.png)
-
-![](docs/img/cursor-2.png)
-
-**mcp.json文件**
+将这些 JSON 配置文件直接复制到 `.continue/mcpServers/` 目录中（注意复数“Servers”），Continue 将自动获取它们。
 
 **stdio方式**
 
@@ -176,105 +149,63 @@ GITEA_ACCESS_TOKEN配置为个人的access token
 }
 ```
 
-
-
-**sse方式**
+**http 模式**
 
 ```
-./gitea-mcp -t sse --port 8080 --host <your devstar url> --token <your personal access token>
+./gitea-mcp -t http [--port 8080] --token <your personal access token>
+```
 
-#配置 MCP 服务器 --sse
+
+
+```
 {
   "mcpServers": {
     "gitea": {
-      "url": "http://localhost:8080/sse"
+      "url": "http://localhost:8080/mcp",
+      "headers": {
+        "Authorization": "Bearer <your personal access token>"
+      }
     }
   }
 }
 ```
 
+![](D:\code\devstar-ai-devops\docs\img\continue-4.png)
 
-#### 4.3 验证配置
 
-1. **检查 MCP 状态：** 在 Settings → MCP 中确认服务器显示为 **Enabled** 且有绿点标识
-2. **测试功能：** 使用 `Ctrl + L` 打开智能对话，选择 Agent 模式测试代码生成和仓库操作
 
-![](docs/img/cursor-5.png)
+#### 4.2 cline配置
+
+##### 4.2.1 本地LLM
+
+在settings找到 “Provider / API provider” 部分
+
+选择 Ollama
+填写 Base URL，通常是 http://localhost:11434/（默认 Ollama 的 API 端口） 
+选择你想用的模型（已经通过 Ollama pull 下来的）
+
+![](D:\code\devstar-ai-devops\docs\img\cline-1.png)
+
+
+
+##### 4.2.2 MCP
+
+选择“ **管理 MCP 服务器** ”以打开 **MCP 服务器** 浮出控件，然后选择 **“设置”** 图标。
+
+![](D:\code\devstar-ai-devops\docs\img\cline-2.png)
+
+在面板的 **MCP 服务器** 部分中，选择“ **配置 MCP 服务器** ”以打开 `cline_mcp_settings.json` 文件进行编辑。
+
+将continue中配置添加到 `mcpServers` JSON 对象：
+
+![](D:\code\devstar-ai-devops\docs\img\cline-3.png)
+
+#### 4.3 cursor配置
+
+**Cursor在内网无法使用私有部署的大模型，如果需要在内网使用，请配置continue.dev（4.4）或Cline（4.5）**
+在 Cursor 中集成前面配置好的 MCP 服务器和私有 LLM，实现 AI 驱动的智能编程体验。
 
 📖 [详细配置指南](docs/cursor.md)
-
-#### 4.4 Continue.dev 配置
-配置 Ollama 集成
-创建/编辑 ~/.continue/config.json：
-```
-{
-  "models": [
-    {
-      "title": "DeepSeek-R1 Local",
-      "provider": "ollama",
-      "model": "deepseek-r1:1.5b",
-      "apiBase": "http://localhost:11434"
-    }
-  ],
-  "tabAutocompleteModel": {
-    "title": "Qwen Coder",
-    "provider": "ollama",
-    "model": "qwen2.5-coder:1.5b",
-    "apiBase": "http://localhost:11434"
-  },
-  "embeddingsProvider": {
-    "provider": "ollama",
-    "model": "nomic-embed-text",
-    "apiBase": "http://localhost:11434"
-  }
-}
-```
-配置 MCP 服务器
-创建文件 ~/.continue/config.yaml 或在工作区创建 .continue/mcpServers/gitea.yaml：
-stdio 方式：
-```
-# ~/.continue/config.yaml
-name: DevStar MCP Server
-version: 0.0.1
-schema: v1
-mcpServers:
-  - name: Gitea MCP
-    type: stdio
-    command: gitea-mcp
-    args:
-      - "-t"
-      - "stdio"
-      - "--host"
-      - "https://devstar.cn"
-    env:
-      GITEA_ACCESS_TOKEN: ${{ secrets.GITEA_ACCESS_TOKEN }}
-```
-sse 方式：
-```
-# .continue/mcpServers/gitea-sse.yaml
-name: DevStar MCP Server
-version: 0.0.1
-schema: v1
-mcpServers:
-  - name: Gitea MCP SSE
-    type: sse
-    url: "http://localhost:8080/sse"
-    env:
-      GITEA_ACCESS_TOKEN: ${{ secrets.GITEA_ACCESS_TOKEN }}
-```
-
-#### 4.5 Cline 配置
-配置 Ollama 集成
-1.在 VSCode 中打开 Cline 插件设置：
-2.找到 “Provider / API provider” 部分
-3.选择 Ollama
-4.填写 Base URL，通常是 http://localhost:11434/（默认 Ollama 的 API 端口） 
-5.选择你想用的模型（已经通过 Ollama pull 下来的）
-
-配置 MCP Server
-在 Cline 的 “MCP Servers” 界面里，选择 “Installed” 标签页。
-添加一个新的 MCP Server 配置
-文件内容同cursor
 
 ## 📖 使用示例
 
@@ -317,7 +248,7 @@ DevStar MCP 服务器提供以下常用工具，帮助您高效管理 Gitea 仓�
 ## 🔗 相关链接
 
 - [DevStar 主项目](https://github.com/mengning/DevStar)
-- [在线演示](https://devstar.cn)
+- [在线演示](docs/workflow.md)
 - [Gitea MCP 项目](https://gitea.com/gitea/gitea-mcp)
 - [Cursor IDE](https://cursor.sh)
 
