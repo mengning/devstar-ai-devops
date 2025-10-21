@@ -170,7 +170,7 @@ GITEA_ACCESS_TOKEN配置为个人的access token
 }
 ```
 
-![](D:\code\devstar-ai-devops\docs\img\continue-4.png)
+![](docs/img/continue-4.png)
 
 
 
