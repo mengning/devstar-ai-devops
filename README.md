@@ -38,7 +38,7 @@ DevStar started in http://localhost:8080 successfully!
 
 选择相应的模型 provider 并填写你的api key
 
-![](D:\code\devstar-ai-devops\docs\img\continue-llm.png)
+![](docs/img/continue-llm.png)
 
 使用Ollama本地部署的LLM，相关配置如下图    📖 [本地部署LLM指南](docs/deploy-llm.md)
 
