@@ -46,9 +46,9 @@ jobs:
 
 result：
 
-![](D:\code\devstar-ai-devops\docs\img\aireview-1.png)
+![](docs/img/aireview-1.png)
 
-![](D:\code\devstar-ai-devops\docs\img\aireview-2.png)
+![](docs/img/aireview-2.png)
 
 ## 输入参数
 
