@@ -1,7 +1,5 @@
 # 本地LLM部署指南
 
-> 本指南将帮助您在本地部署大语言模型(LLM)，并配置continue.dev插件和cursor使用本地模型进行代码开发。
-
 ## 安装部署
 
 ### 1. 安装 Ollama
@@ -24,18 +22,17 @@ ollama --version
 
 ### 3.下载模型
 
-1. **DeepSeek-R1**
+1. **DeepSeek-R1**  //使用MCP需要agent模式 deepseek不支持
 
    ```bash
    ollama pull deepseek-r1:1.5b  # 轻量级
-   ollama pull deepseek-r1:7b    # 平衡选择
+   ollama pull deepseek-r1:8b   
    ```
 
 2. **Qwen2.5-Coder** 
 
    ```bash
-   ollama pull qwen2.5-coder:1.5b
-   ollama pull qwen2.5-coder:7b
+   ollama pull qwen2.5-coder:32b
    ```
 
 ### 4.验证
@@ -58,67 +55,28 @@ ollama serve
 curl http://localhost:11434/api/tags
 ```
 
-## 使用 Continue 插件
 
-### 1. 扩展商店安装 "Continue" 插件
 
-### 2. 基础配置
+### 6.解决Ollama只能本地访问的问题
 
-```
-{
-  "models": [
-    {
-      "title": "DeepSeek-R1 Local",
-      "provider": "ollama",
-      "model": "deepseek-r1:1.5b",
-      "apiBase": "http://localhost:11434"
-    }
-  ],
-  "tabAutocompleteModel": {
-    "title": "Qwen Coder",
-    "provider": "ollama",
-    "model": "qwen2.5-coder:1.5b",
-    "apiBase": "http://localhost:11434"
-  },
-  "embeddingsProvider": {
-    "provider": "ollama",
-    "model": "nomic-embed-text",
-    "apiBase": "http://localhost:11434"
-  }
-}
-```
-
-## Cursor 配置
-
-### 1.安装和配置 ngrok
-
-从[ngrok](https://ngrok.com/)官网下载并登录它，然后他们会指示您通过 Auth Token 登录。
-
-### 2.启动ngrok
-
-我们需要 ngrok 为 ollama 提供公共 URL。
+a. 编辑systemd服务配置，添加环境变量OLLAMA_HOST=0.0.0.0和OLLAMA_ORIGINS=*。
 
 ```
-.\ngrok.exe http 11434 --host-header="localhost:11434"
+sudo nano /etc/systemd/system/ollama.service
 ```
 
-然后我们得到了 OpenAI Public URL 的端点
+并在 `[Service]` 区块中添加：
 
-![](img/llm-1.png)
+```
+Environment=OLLAMA_HOST=0.0.0.0
+Environment=OLLAMA_ORIGINS=*
+```
 
-检查终端节点是否处于活动状态
+b. 重新加载systemd并重启Ollama服务‌。
 
-![](img/llm-2.png)
-
-### 3.定义模型
-
-定义我们在cursor中使用的模型，可以使用 `ollama list` 查看您拥有的模型列表。
-
-![](img/llm-3.png)
-
-### 4.配置base url 和 openai key
-
-在 OpenAI Key 上，使用 `https://xxxxxx.ngrok-free.app` 的公共 url 和 api key `ollama` 完成。
-
-![](img/llm-4.png)
+```
+sudo systemctl daemon-reexec
+sudo systemctl daemon-reload
+sudo systemctl restart ollama
+```
 

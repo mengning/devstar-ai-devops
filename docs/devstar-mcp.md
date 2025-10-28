@@ -60,6 +60,8 @@ cp gitea-mcp /usr/local/bin/
 此示例适用于 Cursor，您也可以在 VSCode 中使用插件。
 要配置 Gitea 的 MCP 服务器，请将以下内容添加到您的 MCP 配置文件中：
 
+continue为`.continue/mcpServers/` 目录中
+
 - **stdio 模式**
 
 ```json
@@ -71,7 +73,7 @@ cp gitea-mcp /usr/local/bin/
         "-t",
         "stdio",
         "--host",
-        "https://devstar.cn"
+        "https://devstar.cn"    //改成实例地址
         // "--token", "<your personal access token>"
       ],
       "env": {
@@ -84,19 +86,15 @@ cp gitea-mcp /usr/local/bin/
 }
 ```
 
-- **sse 模式**
-
-```json
-{
-  "mcpServers": {
-    "gitea": {
-      "url": "http://localhost:8080/sse"
-    }
-  }
-}
-```
-
 - **http 模式**
+
+  先启动服务 
+
+  ```
+  gitea-mcp -t http [--port 8080] --token <your personal access token>
+  ```
+
+  
 
 ```json
 {
@@ -169,7 +167,7 @@ Gitea MCP 服务器支持以下工具：
 要启用调试模式，请在使用 sse 模式运行 Gitea MCP 服务器时添加 `-d` 标志：
 
 ```sh
-./gitea-mcp -t sse [--port 8080] --token <your personal access token> -d
+./gitea-mcp -t http [--port 8080] --token <your personal access token> -d
 ```
 
 ## 🛠 疑难排解
