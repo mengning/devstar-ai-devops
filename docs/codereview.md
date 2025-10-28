@@ -46,9 +46,9 @@ jobs:
 
 result：
 
-![](docs/img/aireview-1.png)
+![](img/aireview-1.png)
 
-![](docs/img/aireview-2.png)
+![](img/aireview-2.png)
 
 ## 输入参数
 
