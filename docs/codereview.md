@@ -35,8 +35,8 @@ jobs:
       - name: Review code
         uses: kekxv/AiReviewPR@v0.0.6
         with:
-          model: 'deepseek-r1:1.5b'
-          host: 'http://172.20.184.132:11434' //设置为自己的ollama host
+          model: '<model>'
+          host: '<ollama host>'
           REVIEW_PULL_REQUEST: false
 ```
 
