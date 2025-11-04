@@ -10,7 +10,7 @@
 
 # 如何使用 How to use
 
- [ollma部署LLM](docs/deploy-llm.md)
+ [ollma部署LLM](deploy-llm.md)
 
 使用方式和普通的 github actions 没什么区别(gitea actions 基本兼容 github actions)。
 
