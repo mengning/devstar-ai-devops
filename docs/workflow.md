@@ -1,5 +1,6 @@
 ## 使用示例
 
+[仓库地址](https://devstar.cn/beppeb/demo-workflow-repo)
 1.创建一个名为 demo-workflow-repo 的新仓库，描述为“工作流自动化测试仓库”，设置为私有
 
 ![](img/ex-1.png)
