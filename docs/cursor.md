@@ -10,7 +10,7 @@ cursor内置了很多LLMs，包括最先进的GPT4s、Claude3.5s和openai最新�
 
 ### 1.ollama本地部署LLM
 
- 📖 [本地部署LLM指南](docs/deploy-llm.md)
+ 📖 [本地部署LLM指南](deploy-llm.md)
 
 ### 2.安装和配置 ngrok
 
