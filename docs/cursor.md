@@ -8,11 +8,15 @@ cursor内置了很多LLMs，包括最先进的GPT4s、Claude3.5s和openai最新�
 
 ## 私有部署LLM
 
-### 1.安装和配置 ngrok
+### 1.ollama本地部署LLM
+
+ 📖 [本地部署LLM指南](deploy-llm.md)
+
+### 2.安装和配置 ngrok
 
 从[ngrok](https://ngrok.com/)官网下载并登录它，然后他们会指示您通过 Auth Token 登录。
 
-### 2.启动ngrok
+### 3.启动ngrok
 
 我们需要 ngrok 为 ollama 提供公共 URL。
 
@@ -28,13 +32,13 @@ cursor内置了很多LLMs，包括最先进的GPT4s、Claude3.5s和openai最新�
 
 ![](img/llm-2.png)
 
-### 3.定义模型
+### 4.定义模型
 
 定义我们在cursor中使用的模型，可以使用 `ollama list` 查看您拥有的模型列表。
 
 ![](img/llm-3.png)
 
-### 4.配置base url 和 openai key
+### 5.配置base url 和 openai key
 
 在 OpenAI Key 上，使用 `https://xxxxxx.ngrok-free.app` 的公共 url 和 api key `ollama` 完成。
 
@@ -62,7 +66,7 @@ cursor内置了很多LLMs，包括最先进的GPT4s、Claude3.5s和openai最新�
 
 ### 2.1 gitea mcp配置
 
-详见[gitea mcp配置](docs/README.md)
+详见[gitea mcp配置](devstar-mcp.md)
 
 ![](img/cursor-4.png)
 
