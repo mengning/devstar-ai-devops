@@ -66,7 +66,7 @@ cursor内置了很多LLMs，包括最先进的GPT4s、Claude3.5s和openai最新�
 
 ### 2.1 gitea mcp配置
 
-详见[gitea mcp配置](docs/README.md)
+详见[gitea mcp配置](devstar-mcp.md)
 
 ![](img/cursor-4.png)
 
