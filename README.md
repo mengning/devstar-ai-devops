@@ -104,6 +104,7 @@ DevStar MCP 服务器提供以下常用工具，帮助您高效管理 Gitea 仓�
 - [在线演示](docs/workflow.md)
 - [Gitea MCP 项目](https://gitea.com/gitea/gitea-mcp)
 - [Cursor IDE](https://cursor.sh)
+- [模板仓库](https://devstar.cn/beppeb/ai-develops)
 
 ---
 
