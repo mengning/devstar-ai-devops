@@ -12,15 +12,6 @@ DevStar AI DevOps 是一个完整的AI驱动研发平台解决方案，通过集
 wget -c https://devstar.cn/assets/install.sh && chmod +x install.sh && sudo ./install.sh
 
 sudo devstar start
-...
--------------------------------------------------------
-DevStar started in http://localhost:8080 successfully!
--------------------------------------------------------
-```
-
-然后通过浏览器打开[http://localhost:8080](http://localhost:8080/) 完成后配置安装，默认第一个注册用户为管理员账户。
-
-
 
 ### 二、配置AI IDE（continue cline cursor（cursor不支持内网））
 
